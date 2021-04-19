@@ -1,12 +1,10 @@
 # ALFRED
 
-Email Based RPA core
-
 ALFRED V1 (Python 3 advanced Outlook automation Tool)
 
-ALFRED is a virtual assistant for quick email automation.
-
 **OBJECTIVE:**
+
+    ALFRED is a virtual assistant for quick email automation.
 
     ALFRED aims to provide a quick and easy RPA capability for EMAIL base organizations where multiple tasks
     could be automated but still depend on a person "processing" such tasks.
