@@ -20,4 +20,9 @@ ALFRED V1 (Python 3 advanced Outlook automation Tool)
 
 **Log:**
 
-    -17/4 first package build. readEmails + regularExpressions have been connected. Since this is the very core of this system.
+    - 19/4:
+        - Setup .VENV for better development.
+        - ADD multiple exceptions to .gitignore
+        - ADD settings.py for main config.
+
+    - 17/4 first package build. readEmails + regularExpressions have been connected. Since this is the very core of this system.
