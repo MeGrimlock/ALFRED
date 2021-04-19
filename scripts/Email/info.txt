@@ -1,0 +1,15 @@
+Email format that gets extracted from Outlook:
+
+print msg.SenderName
+print msg.SenderEmailAddress
+print msg.SentOn
+print msg.To
+print msg.CC
+print msg.BCC
+print msg.Subject
+print msg.Body
+
+count_attachments = msg.Attachments.Count
+if count_attachments > 0:
+    for item in range(count_attachments):
+        print msg.Attachments.Item(item + 1).Filename
