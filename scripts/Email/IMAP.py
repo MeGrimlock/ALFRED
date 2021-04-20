@@ -3,33 +3,62 @@ from .classes.email import Email
 # other libraries to be used in this script
 import os, time
 from datetime import datetime, timedelta
-import win32com.client
-import sys, importlib
+import imaplib
+import email
+from email.header import decode_header
+import webbrowser
+import os
 
-importlib.reload(sys)
+
+def get_mail_client(imap_url, imap_port, imap_email, imap_psw):
+    SMTP_SERVER = imap_url
+    SMTP_PORT = imap_port
+
+    mail = imaplib.IMAP4_SSL(SMTP_SERVER)
+    mail.login(imap_email, imap_psw)
+    return mail
 
 
-def init():
-    global outlook
-    global mapi
+def get_email_ids(label="INBOX", criteria="ALL", max_mails_to_look=10):
+    global mail
+    mail.select(label)
+    type, data = mail.search(None, criteria)
+    mail_ids = data[0]
+    id_list = mail_ids.split()
+    # revers so that latest are at front
+    id_list.reverse()
+    id_list = id_list[: min(len(id_list), max_mails_to_look)]
+    return id_list
+
+
+def get_email_msg(email_id):
+    global mail
+    email_id = str(int(email_id))
+    result, data = mail.fetch(str(email_id), "(RFC822)")
+    for response_part in data:
+        print(response_part)
+        if isinstance(response_part, tuple):
+            return email.message_from_bytes(response_part[1])
+
+
+def init(imap_url, imap_port, imap_email, imap_psw):
+    global mail
     global inbox
     global messages
     global parsed_emails
     global total_emails
     global new_email
 
-    outlook = win32com.client.Dispatch("outlook.application")
-    mapi = outlook.GetNamespace("MAPI")
+    # outlook = win32com.client.Dispatch("outlook.application")
 
-    for account in mapi.Accounts:
-        print(account.DeliveryStore.DisplayName)
-
-    inbox = mapi.GetDefaultFolder(6)
+    mail = get_mail_client(imap_url, imap_port, imap_email, imap_psw)
 
     total_emails = 0
     new_email = False
 
     parsed_emails = []
+
+    messages = []
 
 
 def saveMessage(msg):
@@ -59,6 +88,19 @@ def saveMessages():
             print(e)
 
 
+def get_top_10_emails(category):
+    # category can be 'Promotional, Updates or Forums
+    # returns tuple
+    global mail
+    status, response = mail.uid("search", 'X-GM-RAW "category:' + category + '"')
+
+    # get email ids list
+    response = response[0].decode("utf-8").split()
+    response.reverse()
+    response = response[: min(10, len(response))]
+    return response
+
+
 def getMessagesFromInbox(SenderEmailAddress="", Subject="", timeWindow=0):
     """
     Returns emails from IMBOX that match filtering criteria from keywords.
@@ -75,20 +117,25 @@ def getMessagesFromInbox(SenderEmailAddress="", Subject="", timeWindow=0):
 
     """
     global messages
+    global mail
 
-    messages = inbox.Items
-    if timeWindow > 0:
-        received_dt = datetime.now() - timedelta(minutes=refreshRate)
-        received_dt = received_dt.strftime("%m/%d/%Y %H:%M %p")
-        messages = messages.Restrict("[ReceivedTime] >= '" + received_dt + "'")
-    if SenderEmailAddress != "":
-        messages = messages.Restrict(
-            "[SenderEmailAddress] = '" + SenderEmailAddress + "'"
-        )
-    if Subject:
-        messages = messages.Restrict("[Subject] = '" + Subject + "'")
-    print(str(len(list(messages))) + " Messages Retrieved")
-    saveMessages()
+    email_ids = get_email_ids(mail)
+    for email_id in email_ids:
+        messages.append(get_email_msg(email_id))
+    # messages = inbox
+    # if timeWindow > 0:
+    #    received_dt = datetime.now() - timedelta(minutes=refreshRate)
+    #    received_dt = received_dt.strftime("%m/%d/%Y %H:%M %p")
+    #    messages = messages.Restrict("[ReceivedTime] >= '" + received_dt + "'")
+    # if SenderEmailAddress != "":
+    #    messages = messages.Restrict(
+    #        "[SenderEmailAddress] = '" + SenderEmailAddress + "'"
+    #    )
+    # if Subject:
+    #    messages = messages.Restrict("[Subject] = '" + Subject + "'")
+    # print(str(len(list(messages))) + " Messages Retrieved")
+    # saveMessages()
+
     return messages
 
 
