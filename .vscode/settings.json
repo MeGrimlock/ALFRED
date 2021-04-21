@@ -1,4 +1,4 @@
 {
     "python.formatting.provider": "black",
-    "python.pythonPath": "C:\\Users\\gonza\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe"
+    "python.pythonPath": ".venv\\Scripts\\python.exe"
 }

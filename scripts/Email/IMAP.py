@@ -1,3 +1,5 @@
+# Some reference and methods were teken from > https://pythoncircle.com/post/727/accessing-gmail-inbox-using-python-imaplib-module/
+
 from .classes.email import Email
 
 # other libraries to be used in this script
@@ -19,6 +21,12 @@ def get_mail_client(imap_url, imap_port, imap_email, imap_psw):
     return mail
 
 
+def get_msg_object(data):
+    for response_part in data:
+        if isinstance(response_part, tuple):
+            return email.message_from_bytes(response_part[1])
+
+
 def get_email_ids(label="INBOX", criteria="ALL", max_mails_to_look=10):
     global mail
     mail.select(label)
@@ -36,7 +44,7 @@ def get_email_msg(email_id):
     email_id = str(int(email_id))
     result, data = mail.fetch(str(email_id), "(RFC822)")
     for response_part in data:
-        print(response_part)
+        # print(response_part)
         if isinstance(response_part, tuple):
             return email.message_from_bytes(response_part[1])
 
@@ -101,14 +109,14 @@ def init(imap_url, imap_port, imap_email, imap_psw):
 def saveMessage(msg):
     """Converts MESSAGE to email_type for inter module communications"""
     email = Email(
-        msg.SenderName,
-        msg.SenderEmailAddress,
-        msg.SentOn.strftime("%m/%d/%Y %H:%M %p"),
-        msg.To,
-        msg.CC,
-        msg.BCC,
-        msg.Subject,
-        msg.Body,
+        "",  # msg.SenderName,
+        msg.get("From"),
+        "",  # msg.SentOn.strftime("%m/%d/%Y %H:%M %p"),
+        msg.get("To"),
+        "",  # msg.CC,
+        "",  # msg.BCC,
+        msg.get("Subject"),
+        str(msg),
     )
 
     return email
@@ -138,6 +146,18 @@ def get_top_10_emails(category):
     return response
 
 
+def search_by_subject(email_ids_list, subject_substring):
+    for email_id in email_ids_list:
+        msg = get_email_msg(email_id)
+        if "Subject" in msg.keys():
+            subject = msg.get("Subject", "")
+            print("{}".format(subject))
+            if subject_substring.lower() in subject.lower():
+                return msg
+
+    return None
+
+
 def getMessagesFromInbox(SenderEmailAddress="", Subject="", timeWindow=0):
     """
     Returns emails from IMBOX that match filtering criteria from keywords.
@@ -156,9 +176,11 @@ def getMessagesFromInbox(SenderEmailAddress="", Subject="", timeWindow=0):
     global messages
     global mail
 
-    email_ids = get_email_ids(mail)
+    email_ids = get_email_ids()
     for email_id in email_ids:
-        messages.append(get_email_msg(email_id))
+        raw_email = get_email_msg(email_id)
+        # email_obj = get_msg_object(raw_email)
+        messages.append(raw_email)
     # messages = inbox
     # if timeWindow > 0:
     #    received_dt = datetime.now() - timedelta(minutes=refreshRate)
@@ -170,8 +192,8 @@ def getMessagesFromInbox(SenderEmailAddress="", Subject="", timeWindow=0):
     #    )
     # if Subject:
     #    messages = messages.Restrict("[Subject] = '" + Subject + "'")
-    # print(str(len(list(messages))) + " Messages Retrieved")
-    # saveMessages()
+    print(str(len(list(messages))) + " Messages Retrieved")
+    saveMessages()
 
     return messages
 

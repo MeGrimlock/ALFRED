@@ -25,7 +25,10 @@ print("-----------------------------------------")
 #     print(emailAnalysis.analyzeString(temp_email.Body))
 #     print("-----------------------------------------")
 
-temp_email = myInbox.parsed_emails[100]
+temp_email = myInbox.parsed_emails[0]
+print(temp_email.Subject)
+print(temp_email.To)
+print(temp_email.SenderEmailAddress)
 print(temp_email.Body)
 print(emailAnalysis.analyzeString(temp_email.Body))
 print("-----------------------------------------")
