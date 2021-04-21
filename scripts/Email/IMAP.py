@@ -41,6 +41,43 @@ def get_email_msg(email_id):
             return email.message_from_bytes(response_part[1])
 
 
+def extract_body(msg, depth=0):
+    """ Extract content body of an email messsage """
+    body = []
+    if msg.is_multipart():
+        main_content = None
+        # multi-part emails often have both
+        # a text/plain and a text/html part.
+        # Use the first `text/plain` part if there is one,
+        # otherwise take the first `text/*` part.
+        for part in msg.get_payload():
+            is_txt = part.get_content_type() == "text/plain"
+            if not main_content or is_txt:
+                main_content = extract_body(part)
+            if is_txt:
+                break
+        if main_content:
+            body.extend(main_content)
+    elif msg.get_content_type().startswith("text/"):
+        # Get the messages
+        charset = msg.get_param("charset", "utf-8").lower()
+        # update charset aliases
+        charset = email.charset.ALIASES.get(charset, charset)
+        msg.set_param("charset", charset)
+        try:
+            body.append(msg.get_content())
+        except AssertionError as e:
+            print("Parsing failed.    ")
+            print(e)
+        except LookupError:
+            # set all unknown encoding to utf-8
+            # then add a header to indicate this might be a spam
+            msg.set_param("charset", "utf-8")
+            body.append("=== <UNKOWN ENCODING POSSIBLY SPAM> ===")
+            body.append(msg.get_content())
+    return body
+
+
 def init(imap_url, imap_port, imap_email, imap_psw):
     global mail
     global inbox
