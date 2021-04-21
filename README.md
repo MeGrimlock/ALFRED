@@ -20,6 +20,9 @@ ALFRED V1 (Python 3 advanced Outlook automation Tool)
 
 **Log:**
 
+    - 20/4:
+        - ADD IMAP support (tested for GMAIL), though still WIP
+
     - 19/4:
         - Setup .VENV for better development.
         - ADD multiple exceptions to .gitignore
