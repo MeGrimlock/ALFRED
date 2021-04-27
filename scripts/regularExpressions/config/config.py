@@ -20,6 +20,7 @@ planes_token = "PLANES"
 internet_token = "INTERNET"
 sms_token = "SMS"
 ddff_token = "ID DDFF"
+salesforce_token = "SALESFORCE"
 
 tokens = [
     email_token,
@@ -35,6 +36,7 @@ tokens = [
     internet_token,
     sms_token,
     ddff_token,
+    salesforce_token,
 ]
 
 # ------------------------------------Expressions------------------------------------
@@ -52,6 +54,7 @@ planes_regex = "planes pymes|planes|PLC(\d{2,3})"
 internet_regex = "Internet corporativo|internet|Ancho de Banda|ip"
 sms_regex = "sms|numero corto"
 ddff_regex = "id\d{4}"
+salesforce_regex = "Salesforce|sf"
 
 regexs = [
     email_regex,
@@ -67,8 +70,19 @@ regexs = [
     internet_regex,
     sms_regex,
     ddff_regex,
+    salesforce_regex,
 ]
 
 # ------------------------------------Dictionary------------------------------------
 
 tokensNregex = dict(zip(tokens, regexs))
+
+# ------------------ Particular rules for ClientesDatos processing-----------------------
+
+# Sample: El caso del cliente ::: id3722:desinstalacion:D1082 GOFINAL PIETROBONI :::
+#   ID:                            XXXX
+#
+#
+get_id_regex = (
+    "El caso del cliente ::: id\d{4}:desinstalacion:D1082 GOFINAL PIETROBONI :::"
+)

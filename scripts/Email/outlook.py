@@ -78,7 +78,7 @@ def getMessagesFromInbox(SenderEmailAddress="", Subject="", timeWindow=0):
 
     messages = inbox.Items
     if timeWindow > 0:
-        received_dt = datetime.now() - timedelta(minutes=refreshRate)
+        received_dt = datetime.now() - timedelta(minutes=timeWindow)
         received_dt = received_dt.strftime("%m/%d/%Y %H:%M %p")
         messages = messages.Restrict("[ReceivedTime] >= '" + received_dt + "'")
     if SenderEmailAddress != "":

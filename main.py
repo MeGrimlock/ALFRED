@@ -8,7 +8,7 @@ myInbox.init()
 
 minutos = 20  # Delay entre revisiones
 
-sender = ""
+sender = "ClientesDatos@movistar.com.uy"
 
 print("Checking for new emails...")
 messages = myInbox.getMessagesFromOutlook()
