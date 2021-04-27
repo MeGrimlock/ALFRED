@@ -20,6 +20,11 @@ ALFRED V1 (Python 3 advanced Outlook automation Tool)
 
 **Log:**
 
+    - 27/4:
+        - UPDATE to most scripts.
+        - Rework of REGEX/TOKEN pairs, now as a CLASS
+        - ADD EMAIL TRIGGER CLASS, which makes life easier for creating multiple email analyzing rules.
+
     - 20/4:
         - ADD IMAP support (tested for GMAIL), though still WIP
 
