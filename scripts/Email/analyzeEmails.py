@@ -22,3 +22,49 @@ def classifyEmail(body, subject, rulebook):
 
 def showMatches(text, regex):
     return findRegex(text, regex)
+
+
+def advancedSubjectSearch(Subject, SubjectsList):
+    """
+    Returns emails from IMBOX that match filtering criteria from keywords.
+
+    Keywords:
+
+        Subject: Email subject (String can be a REGEX)
+        SubjectList: Subjects from all emails
+
+    Returns:
+
+        related_messages : List with all email_IDs that match the search pattern
+
+    """
+    related_subjects = []
+    for temp_subject in SubjectsList:
+        if len(re.findall(Subject, temp_subject[1], flags=re.IGNORECASE)) > 0:
+            related_subjects.append(temp_subject[0])
+    print(str(len(related_subjects)) + " Messages Retrieved")
+
+    return related_subjects
+
+
+def advancedBodySearch(Regex, BodyList):
+    """
+    Returns emails from INBOX that match filtering criteria from keywords.
+
+    Keywords:
+
+        Regex:  (String can be a REGEX)
+        BodyList: Body from all emails
+
+    Returns:
+
+        related_messages : List with all email_IDs that match the search pattern
+
+    """
+    related_messages = []
+    for temp_body in BodyList:
+        if len(re.findall(Regex, temp_body[1], flags=re.IGNORECASE)) > 0:
+            related_messages.append(temp_body[0])
+    print(str(len(related_messages)) + " Messages Retrieved")
+
+    return related_messages

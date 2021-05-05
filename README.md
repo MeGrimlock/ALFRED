@@ -17,13 +17,13 @@ ALFRED V1 (Python 3 advanced Outlook automation Tool)
     - Email core class defined based on OUTLOOK specification.
     - Load Outlook emails from main Inbox
     - Run multiple regex analysis on strings (Such as Email: Subject / Body)
+    - Identify tokens in email body/subject and idenfity related emails based on tokens.
 
 **Log:**
 
-    - 27/4:
-        - UPDATE to most scripts.
-        - Rework of REGEX/TOKEN pairs, now as a CLASS
-        - ADD EMAIL TRIGGER CLASS, which makes life easier for creating multiple email analyzing rules.
+    -  4/5:
+        - ADD advancedSearch to outlook
+        - ADD geEmailbyID to outlook
 
     - 20/4:
         - ADD IMAP support (tested for GMAIL), though still WIP

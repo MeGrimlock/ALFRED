@@ -30,11 +30,33 @@ class Email_Trigger:
     def searchEmails(self, ventana):
         print("Checking for new emails...")
         messages = myInbox.getMessagesFromInbox(
-            self.SenderEmailAddress, self.Subject, ventana
+            self.SenderName,
+            self.SenderEmailAddress,
+            self.SentOn,
+            self.Subject,
+            ventana,
         )
         print("Emails extracted:    ")
         print(str(myInbox.Email.emailCount))
         return messages
+
+    def advancedSubjectSearch(self, Subject):
+        print("\tChecking for new emails...ADV-SUBJECT")
+        messages = emailAnalysis.advancedSubjectSearch(Subject, myInbox.raw_subjectList)
+        print("\tEmails extracted:    ")
+        print(len(messages))
+        return messages
+
+    def advancedBodySearch(self, Regex):
+        print("\tChecking for new emails...ADV-BODY")
+        messages = emailAnalysis.advancedBodySearch(Regex, myInbox.raw_bodyList)
+        print("\tEmails extracted:    ")
+        print(len(messages))
+        return messages
+
+    def getEmailByID(self, id):
+        message = myInbox.getEmailByID(id)
+        return message
 
     def printEmailSearch(self, messages):
         print("-----------------------------------------")
@@ -52,6 +74,12 @@ class Email_Trigger:
 
     def splitText(self, text, limiter):
         return emailAnalysis.splitText(text, limiter)
+
+    def sendEmail(self, To, Subject, Body, attachment_path=None):
+        return myInbox.sendEmail(To, Subject, Body, attachment_path)
+
+    def printEmailBrief(self, message):
+        return myInbox.printMessageBrief(message)
 
 
 # --------------------------------------------------------------------

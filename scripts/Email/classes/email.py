@@ -6,11 +6,12 @@ class Email:
     emailCount = 0
 
     def __init__(
-        self, SenderName, SenderEmailAddress, SentOn, To, CC, BCC, Subject, Body
+        self, id, SenderName, SenderEmailAddress, SentOn, To, CC, BCC, Subject, Body
     ):
         """Creates a NEW Email Object
         Keywords:
             self, SenderName, SenderEmailAddress, SentOn, To, CC, BCC, Subject, Body"""
+        self.id = id
         self.SenderName = SenderName
         self.SenderEmailAddress = SenderEmailAddress
         self.SentOn = SentOn
@@ -33,3 +34,13 @@ class Email:
         print("BCC: " + self.BCC)
         print("Subject: " + self.Subject)
         print("Body: " + self.Body)
+
+    def html_table(myList):
+        """Aux method for generating HTML tables"""
+        print("<table>")
+        for element in myList:
+            print("<tr><td>%s</td></tr>" % element)
+        print("</table>")
+
+    def html_body(text):
+        pass
