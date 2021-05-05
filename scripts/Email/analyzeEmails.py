@@ -6,6 +6,12 @@ from scripts.regularExpressions.textAnalysis import *
 
 # -------------------Parse emails-------------------------------------------------------
 
+# Auxiliary file containing scripts for email analysis.
+# Funcionality:
+#   - Advanced Search using pregenerated lists and REGEX expressions
+#   - EMAIL classification based on rulebooks class
+#
+
 
 def classifyEmail(body, subject, rulebook):
     texts = [body, subject]
