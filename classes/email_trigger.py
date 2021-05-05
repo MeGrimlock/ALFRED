@@ -1,4 +1,9 @@
 # Defines the email type to be shared among all other modules. This way ALFRED can always read an email no matter the origin.
+# EMAIL TRIGGER CLASS
+#   - This is the core of the system.
+#   - Calls both Email and Analyze Email scripts.
+#   - Has access to all email operations
+
 import scripts.Email.outlook as myInbox
 import scripts.Email.analyzeEmails as emailAnalysis
 
