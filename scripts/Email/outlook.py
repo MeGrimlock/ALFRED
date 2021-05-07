@@ -54,7 +54,7 @@ def createEmail(to, subject, body, attachment=None):
     mail = outlook.CreateItem(0)
 
     retorno = False
-    mail.To = to  #'gonzalo.garat@telefonica.com'
+    mail.To = to  #'zucale@telefonica.com'
     mail.Subject = subject  #'Message subject'
 
     mail.Body = body  # body #'Message body'
